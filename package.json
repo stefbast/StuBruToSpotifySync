@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "spotify-web-api-node": "^2.3.2"
+  }
+}
