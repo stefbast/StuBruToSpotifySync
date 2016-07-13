@@ -1,3 +1,5 @@
+'use strict';
+
 //http://stackoverflow.com/questions/9577611/http-get-request-in-node-js-express
 
 var http = require("http");
@@ -8,30 +10,34 @@ var https = require("https");
  * @param options: http options object
  * @param callback: callback to pass the results JSON object(s) back
  */
-exports.getJSON = function(options, onResult)
+exports.getJSON = function(options)
 {
-    console.log("rest::getJSON");
+    return new Promise(function (fulfill, reject){
 
-    var prot = options.port == 443 ? https : http;
-    var req = prot.request(options, function(res)
-    {
-        var output = '';
-        console.log(options.host + ':' + res.statusCode);
-        res.setEncoding('utf8');
+        console.log("rest::getJSON");
 
-        res.on('data', function (chunk) {
-            output += chunk;
+        var protocol = options.port == 443 ? https : http;
+        var req = protocol.request(options, function(res)
+        {
+            var output = '';
+            console.log(options.host + ':' + res.statusCode);
+            res.setEncoding('utf8');
+
+            res.on('data', function (chunk) {
+                output += chunk;
+            });
+
+            res.on('end', function() {
+                var obj = JSON.parse(output);
+                fulfill(obj);
+            });
         });
 
-        res.on('end', function() {
-            var obj = JSON.parse(output);
-            onResult(res.statusCode, obj);
+        req.on('error', function(err) {
+            reject(Error(err));
         });
-    });
 
-    req.on('error', function(err) {
-        //res.send('error: ' + err.message);
-    });
+        req.end();
 
-    req.end();
+    });  
 };
