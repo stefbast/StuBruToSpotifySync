@@ -12,7 +12,7 @@ exports.getAuthorizeURL = function(spotifyApi)
 }
 
 exports.getRefreshToken = function(spotifyApi, code){    
-    spotifyApi.authorizationCodeGrant(code)
+    return spotifyApi.authorizationCodeGrant(code)
     .then(function(data) {    
         return data.body['refresh_token'];
     }, function(err) {
@@ -23,7 +23,7 @@ exports.getRefreshToken = function(spotifyApi, code){
 exports.importList = function(spotifyApi, refreshToken, user, listName){
     spotifyApi.setRefreshToken(refreshToken);
 
-    Promise.all([getPlaylist(user, listName), getSongs()])
+    Promise.all([getPlaylist(spotifyApi, user, listName), getSongs(spotifyApi)])
     .then(function(result) {
         var playlistId = result[0];
         var songIds = result[1].map(function(songId){
@@ -41,7 +41,7 @@ exports.importList = function(spotifyApi, refreshToken, user, listName){
 
 
 
-function getPlaylist(user, listName){
+function getPlaylist(spotifyApi, user, listName){
     return spotifyApi.refreshAccessToken()
         .then(function(data) {
             console.log('The access token has been refreshed!');    
@@ -62,7 +62,7 @@ function getPlaylist(user, listName){
         });
 } 
 
-function getSongs(){
+function getSongs(spotifyApi){
     var options = {
         host: 'hitlijst.stubru.be',
         port: 443,

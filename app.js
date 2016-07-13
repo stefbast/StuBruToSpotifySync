@@ -14,6 +14,9 @@ var spotifyApi = new SpotifyWebApi({
 
 console.log(sync.getAuthorizeURL(spotifyApi));
 
-sync.getRefreshToken(spotifyApi, 'TODO');
+// sync.getRefreshToken(spotifyApi, 'TODO')
+// .then(function(result) {
+//   console.log(result);
+// });
 
-sync.importList(spotifyApi, 'TODO', user, 'De afrekening');
+// sync.importList(spotifyApi, 'TODO', user, 'De afrekening');
