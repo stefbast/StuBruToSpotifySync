@@ -1,7 +1,7 @@
 'use strict';
 
 var SpotifyWebApi = require('spotify-web-api-node');
-var sync = require('../sync.js');
+var sync = require('./sync.js');
 
 
 var user = 'TODO'

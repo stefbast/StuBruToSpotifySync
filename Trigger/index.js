@@ -1,11 +1,12 @@
+var sync = require('../sync.js');
+
 module.exports = function (context, myTimer) {
-    //var timeStamp = new Date().toISOString();
     
-    //if(myTimer.isPastDue)
-    //{
-    //   context.log('Node.js is running late!');
-    //}
-    //context.log('Node.js timer trigger function ran!', timeStamp);   
-    
+    var timeStamp = new Date().toISOString();
+
+    context.log('Start syncing !', timeStamp);
+
+    sync.importList(spotifyApi, 'TODO', user, 'De afrekening');
+
     context.done();
 };
