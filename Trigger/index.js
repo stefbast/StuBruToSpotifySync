@@ -1,9 +1,8 @@
 module.exports = function (context, myTimer) {
 
-    //redirect console.log to context.log
     console.log = function(message){
             context.log(message)
-        };
+    };
 
     var sync = require('../sync.js');
     var SpotifyWebApi = require('spotify-web-api-node');
@@ -19,7 +18,7 @@ module.exports = function (context, myTimer) {
     clientSecret: 'TODO',
     redirectUri : 'http://www.example.com/callback'
     });
-    console.log('test');
+        
     sync.importList(spotifyApi, 'TODO', user, 'De afrekening');
 
     context.done();
