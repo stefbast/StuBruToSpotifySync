@@ -59,6 +59,10 @@ function getPlaylist(spotifyApi, user, listName){
         })
         .then(function(playlistId){
             return playlistId.body.id;
+        })
+        .catch(function(error){
+            console.log("Could not get playlist", error);
+            throw error;
         });
 } 
 
@@ -90,5 +94,9 @@ function getSongs(spotifyApi){
                  })
         });
         return sequence;
+    })
+    .catch(function(error){
+        console.log("Could not get playlist", error);
+        throw error;
     });    
 }

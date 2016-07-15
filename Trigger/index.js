@@ -1,7 +1,11 @@
 module.exports = function (context, myTimer) {
 
-    console.log = function(message){
+    console.log = function(message, error){
+        if(error){
+            context.log(message, error);
+        }else{
             context.log(message);
+        }            
     };
 
     var sync = require('../sync.js');
