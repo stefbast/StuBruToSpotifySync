@@ -18,9 +18,9 @@ module.exports = function (context, myTimer) {
     var user = 'TODO';
 
     var spotifyApi = new SpotifyWebApi({
-    clientId : 'TODO',
-    clientSecret: 'TODO',
-    redirectUri : 'http://www.example.com/callback'
+        clientId : 'TODO',
+        clientSecret: 'TODO',
+        redirectUri : 'http://www.example.com/callback'
     });
 
     sync.importList(spotifyApi, 'TODO', user, 'De afrekening');
