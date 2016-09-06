@@ -82,11 +82,14 @@ function getSongs(spotifyApi){
         var sequence = Promise.resolve();
         var songIds = [];
         data.songs.forEach(function(song) {
+            var sanitizedSongTitle = sanitizeSongTitle(song.title);
+            var sanitizedArtistName = sanitizeArtistName(song.artist);
+
                  sequence = sequence.then(function(){
-                     return spotifyApi.searchTracks('track:' + song.title  + ' artist:'+ song.artist);
+                     return spotifyApi.searchTracks('track:' +  sanitizedSongTitle + ' artist:'+ sanitizedArtistName);
                  }).then(function(data){
-                     if(data.body.tracks.items.length == 0){
-                         console.log("Could not find track: " + song.title + " artists: "+ song.artist)
+                     if(data.body.tracks.items.length == 0){                                                  
+                         console.log("Could not find track: " + sanitizedSongTitle + " artists: "+ sanitizedArtistName)
                      } else {
                         songIds.push(data.body.tracks.items[0].id);
                         return songIds;
@@ -99,4 +102,25 @@ function getSongs(spotifyApi){
         console.log("Could not get playlist", error);
         throw error;
     });    
+}
+
+function sanitizeArtistName(artistName){
+    if(artistName.indexOf("feat") !== -1){
+        var sanitizedName = artistName.split("feat")[0]
+        console.log("Changed artist name from: " + artistName + " to: " + sanitizedName)
+        return sanitizedName;
+    }
+
+    return artistName;
+}
+
+function sanitizeSongTitle(songTitle){
+    var hasParenthessesRegex = / *\([^)]*\) */g;
+    if(hasParenthessesRegex.test(songTitle)){
+        var sanitizedTitle = songTitle.replace(/ *\([^)]*\) */g, "");
+        console.log("Changed song title from: " + songTitle + " to: " + sanitizedTitle)
+        return sanitizedTitle;
+    }
+
+    return songTitle;
 }
