@@ -51,7 +51,7 @@ function getPlaylist(spotifyApi, user, listName){
         })
         .then(function(playlists){
             var afrekeningPlaylists = playlists.body.items.filter(item => item.name == listName);
-            if(afrekeningPlaylists.length == 0){
+            if(afrekeningPlaylists.length === 0){
                 return spotifyApi.createPlaylist(user, listName, { 'public' : true })          
             } else {        
                 return {body: { id: afrekeningPlaylists[0].id}}; 
@@ -88,7 +88,7 @@ function getSongs(spotifyApi){
                  sequence = sequence.then(function(){
                      return spotifyApi.searchTracks('track:' +  sanitizedSongTitle + ' artist:'+ sanitizedArtistName);
                  }).then(function(data){
-                     if(data.body.tracks.items.length == 0){                                                  
+                     if(data.body.tracks.items.length === 0){                                                  
                          console.log("Could not find track: " + sanitizedSongTitle + " artists: "+ sanitizedArtistName)
                      } else {
                         songIds.push(data.body.tracks.items[0].id);
@@ -105,13 +105,20 @@ function getSongs(spotifyApi){
 }
 
 function sanitizeArtistName(artistName){
-    if(artistName.indexOf("feat") !== -1){
-        var sanitizedName = artistName.split("feat")[0]
-        console.log("Changed artist name from: " + artistName + " to: " + sanitizedName)
-        return sanitizedName;
-    }
+    artistName = trim(artistName, "feat");
+    artistName = trim(artistName, "ft.");
 
     return artistName;
+}
+
+function trim(text, tailMarker){
+    if(text.indexOf(tailMarker) !== -1){
+        var sanitizedText = text.split(tailMarker)[0]
+        console.log("Changed from: " + text + " to: " + sanitizedText)
+        return sanitizedText;
+    }
+
+    return text;
 }
 
 function sanitizeSongTitle(songTitle){
